@@ -1,0 +1,65 @@
+---
+import BlogLayout from '@/layouts/BlogLayout.astro'
+import type { GetStaticPaths } from 'astro'
+import { Image } from 'astro:assets'
+import { getCollection } from 'astro:content'
+export const getStaticPaths = (async () => {
+  const posts = await getCollection('blog')
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }))
+}) satisfies GetStaticPaths
+
+const post = Astro.props.post
+const { title, author } = post.data
+
+const { Content, headings } = await post.render()
+---
+
+<BlogLayout title={title}>
+  <Image
+    src={post.data.image}
+    alt={title}
+    width={600}
+    height={220}
+    class='object-cover w-full h-56 rounded-xl lg:w-64 my-8'
+    quality={'low'}
+    loading={'lazy'}
+  />
+
+  <header class='flex justify-between'>
+    <div class=''>
+      <h1 class='text-xs text-gray-500 mb-0'>
+        {title}
+      </h1>
+      <h4 class='text-md text-gray-400 my-0'>
+        {author}
+      </h4>
+    </div>
+
+    <div class='max-w-96'>
+      <h3>Tabla de contenidos</h3>
+      <ul>
+        {
+          headings.map((heading) => (
+            <li>
+              <a
+                href={`#${heading.slug}`}
+                class='text-sm text-gray-400 hover:underline'
+              >
+                {heading.text}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </header>
+
+  <Content />
+
+  <div class='my-10'>
+    <a href='#top'>Ir Arriba</a>
+  </div>
+</BlogLayout>

@@ -3,7 +3,7 @@ title: Construyendo una API REST con Node.js
 date: 2023-06-20
 description: En este tutorial, construiremos una API RESTful utilizando Node.js y Express.
 author: Bob Williams
-image: '/assets/images/post-04.png'
+image: 'images/post-04.png'
 tags: [Node.js, Express, API, Backend]
 ---
 
@@ -23,17 +23,17 @@ npm install express
 Creamos un archivo `index.js` y agregamos el siguiente código:
 
 ```javascript
-const express = require('express');
-const app = express();
-const port = 3000;
+const express = require('express')
+const app = express()
+const port = 3000
 
 app.get('/', (req, res) => {
-  res.send('Hello World!');
-});
+  res.send('Hello World!')
+})
 
 app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
-});
+  console.log(`Server is running on http://localhost:${port}`)
+})
 ```
 
 Para ejecutar la aplicación, ejecuta el siguiente comando:
@@ -53,13 +53,13 @@ app.get('/api/users', (req, res) => {
   res.json([
     { id: 1, name: 'Alice' },
     { id: 2, name: 'Bob' },
-  ]);
-});
+  ])
+})
 
 app.get('/api/users/:id', (req, res) => {
-  const id = req.params.id;
-  res.json({ id, name: 'Alice' });
-});
+  const id = req.params.id
+  res.json({ id, name: 'Alice' })
+})
 ```
 
 Ahora puedes acceder a la API de usuarios en `http://localhost:3000/api/users` y `http://localhost:3000/api/users/1`.
