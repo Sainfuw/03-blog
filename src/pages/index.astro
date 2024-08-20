@@ -1,0 +1,40 @@
+---
+import { siteConfig } from '../configs/site-config'
+import MainLayout from '../layouts/MainLayout.astro'
+
+const { title, blogs } = siteConfig
+---
+
+<MainLayout title='Blog'>
+  <h1
+    class='text-3xl font-semibold text-gray-800 capitalize lg:text-4xl dark:text-white'
+  >
+    {title}
+  </h1>
+  <div class='grid grid-cols-2 gap-8 mt-8'>
+    {
+      blogs.map((blog) => (
+        <div class='lg:flex'>
+          <img
+            class='object-cover w-full h-56 rounded-lg lg:w-64'
+            src={blog.image}
+            alt={blog.title}
+          />
+
+          <div class='flex flex-col justify-between py-6 lg:mx-6 gap-2'>
+            <a
+              href='#'
+              class='text-xl font-semibold text-gray-800 hover:underline dark:text-white'
+            >
+              {blog.title}
+            </a>
+
+            <span class='text-sm text-gray-500 dark:text-gray-300'>
+              {blog.date}
+            </span>
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</MainLayout>
