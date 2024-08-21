@@ -5,7 +5,7 @@ import { siteConfig } from '../configs/site-config'
 import MainLayout from '../layouts/MainLayout.astro'
 
 const { title } = siteConfig
-const blogPosts = await getCollection('blog')
+const blogPosts = await getCollection('blog', (post) => !post.data.isDraft)
 ---
 
 <MainLayout title='Blog'>
@@ -14,6 +14,12 @@ const blogPosts = await getCollection('blog')
   >
     {title}
   </h1>
+  <div class='flex gap-4 mt-2'>
+    <a href='/blog/1' class='text-blue-500 hover:underline'>Blog Paginado</a>
+    <a href='/authors' class='text-blue-500 hover:underline'
+      >Listado de Autores</a
+    >
+  </div>
   <div class='grid grid-cols-1 md:grid-cols-2 gap-8 mt-8'>
     {blogPosts.map((post) => <BlogPost post={post} />)}
   </div>

@@ -1,8 +1,10 @@
 ---
 import BlogLayout from '@/layouts/BlogLayout.astro'
+import Formatter from '@/utils/formatter'
 import type { GetStaticPaths } from 'astro'
 import { Image } from 'astro:assets'
-import { getCollection } from 'astro:content'
+import { getCollection, getEntry } from 'astro:content'
+
 export const getStaticPaths = (async () => {
   const posts = await getCollection('blog')
   return posts.map((post) => ({
@@ -11,10 +13,16 @@ export const getStaticPaths = (async () => {
   }))
 }) satisfies GetStaticPaths
 
-const post = Astro.props.post
-const { title, author } = post.data
+const { post } = Astro.props
+const {
+  title,
+  author: { id: authorId },
+  date,
+} = post.data
 
 const { Content, headings } = await post.render()
+
+const author = (await getEntry('author', authorId)).data
 ---
 
 <BlogLayout title={title}>
@@ -23,19 +31,30 @@ const { Content, headings } = await post.render()
     alt={title}
     width={600}
     height={220}
-    class='object-cover w-full h-56 rounded-xl lg:w-64 my-8'
-    quality={'low'}
+    class='object-cover w-full h-56 rounded-xl my-8'
+    quality={'mid'}
     loading={'lazy'}
+    transition:name={`${post.slug}-image`}
   />
 
   <header class='flex justify-between'>
-    <div class=''>
+    <div>
       <h1 class='text-xs text-gray-500 mb-0'>
         {title}
       </h1>
-      <h4 class='text-md text-gray-400 my-0'>
-        {author}
-      </h4>
+      <div class='flex items-center mt-4 gap-4'>
+        <Image
+          src={author.avatar}
+          alt={author.name}
+          class={'size-16 rounded-full'}
+        />
+        <div class='flex flex-col gap-1'>
+          <a href={`/blog/${authorId}`} class='text-blue-500 hover:underline'>
+            {author.name}
+          </a>
+          <p class='text-xs text-gray-400 my-0'>{Formatter.formatDate(date)}</p>
+        </div>
+      </div>
     </div>
 
     <div class='max-w-96'>

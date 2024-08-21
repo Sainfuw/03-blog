@@ -12,6 +12,7 @@ const { title } = Astro.props
     <meta name='viewport' content='width=device-width' />
     <meta name='generator' content={Astro.generator} />
     <title>{title}</title>
+
     <ViewTransitions />
   </head>
   <body class='bg-gray-900'>
@@ -21,3 +22,10 @@ const { title } = Astro.props
     </main>
   </body>
 </html>
+
+<style>
+  html {
+    scroll-behavior: smooth;
+    scrollbar-gutter: stable both-edges;
+  }
+</style>
